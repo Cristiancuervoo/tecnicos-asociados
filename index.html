@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Técnicos Asociados — Rectificación de Motores · Bogotá</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:       #07111D;
+      --bg2:      #0C1A28;
+      --blue:     #1A5FAD;
+      --blue-l:   #2D83E8;
+      --blue-xl:  #5BA6FF;
+      --steel:    #6B8BA4;
+      --steel-l:  #9BB5CB;
+      --white:    #E8F1F8;
+      --glass:    rgba(26,95,173,0.09);
+      --glass-b:  rgba(26,95,173,0.18);
+      --border:   rgba(45,131,232,0.15);
+      --border-h: rgba(45,131,232,0.4);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--steel-l);
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE TEXTURE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 0 clamp(1.5rem, 5%, 5rem);
+      height: 68px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(7,17,29,0.7);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid var(--border);
+      transition: background .3s;
+    }
+
+    .nav-brand {
+      display: flex; align-items: center; gap: .75rem;
+      text-decoration: none;
+    }
+    .nav-logo-mark {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--blue), var(--blue-l));
+      display: flex; align-items: center; justify-content: center;
+      font-size: .85rem; flex-shrink: 0;
+    }
+    .nav-brand-text {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800; font-size: 1rem;
+      letter-spacing: .04em; color: var(--white);
+    }
+    .nav-brand-text span { color: var(--blue-xl); }
+
+    .nav-links {
+      display: flex; align-items: center;
+      gap: .25rem; list-style: none;
+    }
+    .nav-links a {
+      color: var(--steel-l); text-decoration: none;
+      font-size: .85rem; font-weight: 500;
+      padding: .5rem .9rem; border-radius: 6px;
+      transition: color .2s, background .2s;
+    }
+    .nav-links a:hover { color: var(--white); background: var(--glass); }
+
+    .nav-cta {
+      background: var(--blue) !important;
+      color: #fff !important;
+      font-weight: 600 !important;
+      box-shadow: 0 0 20px rgba(26,95,173,.35);
+      transition: background .2s, box-shadow .2s, transform .15s !important;
+    }
+    .nav-cta:hover {
+      background: var(--blue-l) !important;
+      box-shadow: 0 0 30px rgba(45,131,232,.5) !important;
+      transform: translateY(-1px);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 3rem;
+      padding: 7rem clamp(1.5rem,5%,5rem) 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* BG glow blobs */
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(26,95,173,.18) 0%, transparent 70%);
+      top: -100px; right: -100px;
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(45,131,232,.1) 0%, transparent 70%);
+      bottom: 0; left: 10%;
+      pointer-events: none;
+    }
+
+    .hero-copy { position: relative; z-index: 1; }
+
+    .pill {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: .35rem .9rem .35rem .5rem;
+      margin-bottom: 2rem;
+    }
+    .pill-dot {
+      width: 6px; height: 6px;
+      background: var(--blue-xl); border-radius: 50%;
+      box-shadow: 0 0 6px var(--blue-xl);
+      animation: blink 2s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%,100% { opacity: 1; } 50% { opacity: .3; }
+    }
+    .pill span { font-size: .72rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--blue-xl); }
+
+    .hero h1 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2.8rem, 5.5vw, 5rem);
+      line-height: 1.0;
+      color: var(--white);
+      letter-spacing: -.01em;
+      margin-bottom: 1.6rem;
+    }
+    .hero h1 .grad {
+      background: linear-gradient(135deg, var(--blue-l), var(--blue-xl));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 1.05rem; color: var(--steel-l);
+      line-height: 1.75; max-width: 480px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-btns { display: flex; gap: .9rem; flex-wrap: wrap; margin-bottom: 3rem; }
+
+    .btn-blue {
+      display: inline-flex; align-items: center; gap: .55rem;
+      background: linear-gradient(135deg, var(--blue), var(--blue-l));
+      color: #fff; font-weight: 600; font-size: .92rem;
+      padding: .85rem 1.8rem; border-radius: 10px;
+      text-decoration: none;
+      box-shadow: 0 4px 24px rgba(26,95,173,.4), 0 0 0 0 rgba(45,131,232,.3);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .btn-blue:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(26,95,173,.55), 0 0 0 4px rgba(45,131,232,.15);
+    }
+    .btn-line {
+      display: inline-flex; align-items: center; gap: .55rem;
+      border: 1.5px solid var(--border-h);
+      color: var(--steel-l); font-size: .92rem; font-weight: 500;
+      padding: .85rem 1.8rem; border-radius: 10px;
+      text-decoration: none;
+      transition: border-color .2s, color .2s, background .2s;
+    }
+    .btn-line:hover { border-color: var(--blue-xl); color: var(--white); background: var(--glass); }
+
+    /* trust pills */
+    .trust { display: flex; flex-wrap: wrap; gap: .6rem; }
+    .trust-item {
+      display: flex; align-items: center; gap: .4rem;
+      font-size: .78rem; color: var(--steel-l);
+    }
+    .trust-item::before {
+      content: '✓';
+      color: var(--blue-xl); font-weight: 700; font-size: .75rem;
+    }
+
+    /* ── HERO RIGHT — visual card stack ── */
+    .hero-visual {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; gap: 1rem;
+    }
+
+    .vis-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem 1.8rem;
+      backdrop-filter: blur(10px);
+      transition: border-color .25s, transform .2s;
+    }
+    .vis-card:hover { border-color: var(--border-h); transform: translateX(-4px); }
+
+    .vis-card-top {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      margin-bottom: .8rem;
+    }
+    .vis-icon {
+      width: 42px; height: 42px;
+      background: linear-gradient(135deg, var(--blue), var(--blue-l));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+    }
+    .vis-badge {
+      background: rgba(91,166,255,.12);
+      border: 1px solid rgba(91,166,255,.25);
+      color: var(--blue-xl); font-size: .7rem;
+      font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: .2rem .6rem; border-radius: 20px;
+    }
+    .vis-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800; font-size: 1rem;
+      color: var(--white); margin-bottom: .3rem;
+    }
+    .vis-desc { font-size: .82rem; color: var(--steel); line-height: 1.5; }
+
+    /* ── MARQUEE STRIP ── */
+    .marquee-wrap {
+      background: linear-gradient(135deg, var(--blue), #0D3D7A);
+      padding: .9rem 0; overflow: hidden;
+      border-top: 1px solid rgba(255,255,255,.08);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .marquee-track {
+      display: flex; gap: 3rem;
+      animation: marquee 25s linear infinite;
+      white-space: nowrap;
+    }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .marquee-item {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700; font-size: .78rem;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: rgba(255,255,255,.75);
+      display: flex; align-items: center; gap: .7rem;
+    }
+    .marquee-sep { color: rgba(255,255,255,.3); font-size: .5rem; }
+
+    /* ── SECTION BASE ── */
+    section { padding: 6rem clamp(1.5rem,5%,5rem); position: relative; }
+
+    .label {
+      display: inline-flex; align-items: center; gap: .5rem;
+      font-size: .68rem; font-weight: 700;
+      letter-spacing: .2em; text-transform: uppercase;
+      color: var(--blue-xl); margin-bottom: 1rem;
+    }
+    .label::before { content: ''; width: 20px; height: 1.5px; background: var(--blue-xl); }
+
+    .sec-h {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--white); letter-spacing: -.01em;
+      line-height: 1.1; margin-bottom: 1rem;
+    }
+    .sec-p {
+      color: var(--steel-l); max-width: 500px;
+      font-size: .95rem; margin-bottom: 3rem;
+    }
+
+    /* ── SERVICIOS ── */
+    #servicios { background: var(--bg2); }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+    }
+
+    .svc-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.8rem;
+      transition: border-color .25s, transform .25s, background .25s;
+      cursor: default;
+    }
+    .svc-card:hover {
+      background: var(--glass-b);
+      border-color: var(--border-h);
+      transform: translateY(-6px);
+    }
+    .svc-top {
+      display: flex; align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 1.2rem;
+    }
+    .svc-icon-wrap {
+      width: 48px; height: 48px;
+      background: linear-gradient(135deg, rgba(26,95,173,.3), rgba(45,131,232,.15));
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+    }
+    .svc-num {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800; font-size: .75rem;
+      color: var(--border-h); letter-spacing: .08em;
+    }
+    .svc-name {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800; font-size: .95rem;
+      color: var(--white); margin-bottom: .6rem; line-height: 1.3;
+    }
+    .svc-desc { font-size: .83rem; color: var(--steel); line-height: 1.7; }
+
+    /* ── NOSOTROS ── */
+    #nosotros { background: var(--bg); }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem; align-items: start;
+    }
+
+    .feat-list { display: flex; flex-direction: column; gap: 1.4rem; margin-top: 2rem; }
+    .feat {
+      display: flex; gap: 1rem; align-items: flex-start;
+      padding: 1.2rem 1.4rem;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      transition: border-color .2s;
+    }
+    .feat:hover { border-color: var(--border-h); }
+    .feat-icon {
+      font-size: 1.3rem; flex-shrink: 0; margin-top: .1rem;
+    }
+    .feat-body strong {
+      display: block; color: var(--white);
+      font-weight: 600; font-size: .92rem; margin-bottom: .2rem;
+    }
+    .feat-body span { font-size: .82rem; color: var(--steel); line-height: 1.6; }
+
+    /* schedule card */
+    .sched-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    .sched-head {
+      background: linear-gradient(135deg, var(--blue), var(--blue-l));
+      padding: 1.4rem 1.8rem;
+      display: flex; align-items: center; gap: .7rem;
+    }
+    .sched-head-icon { font-size: 1.2rem; }
+    .sched-head-text {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800; font-size: 1rem;
+      color: #fff; letter-spacing: .03em;
+    }
+    .sched-body { padding: 1.6rem 1.8rem; display: flex; flex-direction: column; gap: 0; }
+    .sched-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: .9rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .sched-row:last-child { border-bottom: none; }
+    .sched-day { font-size: .88rem; color: var(--steel-l); }
+    .sched-time {
+      font-size: .85rem; font-weight: 700; color: var(--white);
+      background: rgba(45,131,232,.15);
+      padding: .25rem .85rem; border-radius: 20px;
+      border: 1px solid rgba(45,131,232,.25);
+    }
+    .sched-closed { color: var(--steel) !important; background: none !important; border: none !important; font-weight: 400 !important; }
+
+    .contact-quick {
+      margin-top: 1.2rem;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.4rem 1.8rem;
+    }
+    .contact-quick-label {
+      font-size: .67rem; font-weight: 700;
+      letter-spacing: .15em; text-transform: uppercase;
+      color: var(--blue-xl); display: block; margin-bottom: .9rem;
+    }
+    .cq-num {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800; font-size: 1.5rem;
+      color: var(--white); display: block; line-height: 1.25;
+      text-decoration: none; transition: color .2s;
+    }
+    .cq-num:hover { color: var(--blue-xl); }
+    .cq-addr {
+      font-size: .8rem; color: var(--steel);
+      margin-top: .9rem; line-height: 1.6;
+    }
+
+    /* ── PROCESO ── */
+    #proceso { background: var(--bg2); }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    .step {
+      background: var(--bg2);
+      padding: 2.2rem 1.8rem;
+      position: relative;
+      transition: background .25s;
+    }
+    .step:hover { background: var(--glass); }
+    .step-num {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800; font-size: 3.5rem;
+      line-height: 1; color: rgba(45,131,232,.1);
+      position: absolute; top: 1.2rem; right: 1.4rem;
+      letter-spacing: -.02em;
+    }
+    .step-icon { font-size: 1.6rem; margin-bottom: 1.2rem; display: block; }
+    .step-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800; font-size: .95rem;
+      color: var(--white); margin-bottom: .5rem; line-height: 1.3;
+    }
+    .step-desc { font-size: .82rem; color: var(--steel); line-height: 1.65; }
+
+    /* ── CONTACTO ── */
+    #contacto { background: var(--bg); }
+
+    .contact-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: center;
+    }
+
+    .cc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .9rem;
+    }
+    .cc-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.4rem;
+      text-decoration: none; color: inherit;
+      display: flex; align-items: flex-start; gap: .9rem;
+      transition: border-color .2s, transform .2s, background .2s;
+    }
+    .cc-card:hover {
+      border-color: var(--border-h);
+      transform: translateY(-3px);
+      background: var(--glass-b);
+    }
+    .cc-icon-wrap {
+      width: 38px; height: 38px; flex-shrink: 0;
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(26,95,173,.3), rgba(45,131,232,.15));
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+    }
+    .cc-lbl {
+      font-size: .67rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .1em;
+      color: var(--blue-xl); margin-bottom: .2rem; display: block;
+    }
+    .cc-val {
+      font-size: .88rem; color: var(--white);
+      font-weight: 600; display: block; line-height: 1.3;
+    }
+
+    .map-link {
+      display: inline-flex; align-items: center; gap: .6rem;
+      margin-top: 1.2rem;
+      border: 1px solid var(--border);
+      color: var(--steel-l); font-size: .82rem;
+      padding: .65rem 1.4rem; border-radius: 50px;
+      text-decoration: none;
+      transition: border-color .2s, color .2s;
+    }
+    .map-link:hover { border-color: var(--blue-xl); color: var(--white); }
+
+    /* CTA block right side */
+    .cta-block {
+      background: linear-gradient(135deg, rgba(26,95,173,.15), rgba(45,131,232,.07));
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 2.5rem 2.2rem;
+      text-align: center;
+    }
+    .cta-icon { font-size: 3rem; display: block; margin-bottom: 1.2rem; }
+    .cta-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800; font-size: 1.5rem;
+      color: var(--white); margin-bottom: .8rem; line-height: 1.2;
+    }
+    .cta-sub { font-size: .88rem; color: var(--steel-l); margin-bottom: 1.8rem; line-height: 1.6; }
+    .cta-btn {
+      display: inline-flex; align-items: center; gap: .6rem;
+      background: linear-gradient(135deg, var(--blue), var(--blue-l));
+      color: #fff; font-weight: 700; font-size: .95rem;
+      padding: 1rem 2rem; border-radius: 12px;
+      text-decoration: none; width: 100%; justify-content: center;
+      box-shadow: 0 4px 24px rgba(26,95,173,.4);
+      transition: transform .2s, box-shadow .2s;
+      margin-bottom: .8rem;
+    }
+    .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(26,95,173,.55); }
+    .cta-socials { display: flex; gap: .6rem; justify-content: center; margin-top: 1rem; }
+    .cta-soc {
+      flex: 1;
+      display: flex; align-items: center; justify-content: center; gap: .4rem;
+      border: 1px solid var(--border); color: var(--steel-l);
+      font-size: .82rem; font-weight: 500;
+      padding: .65rem; border-radius: 10px;
+      text-decoration: none;
+      transition: border-color .2s, color .2s, background .2s;
+    }
+    .cta-soc:hover { border-color: var(--border-h); color: var(--white); background: var(--glass); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #040C16;
+      border-top: 1px solid var(--border);
+      padding: 2rem clamp(1.5rem,5%,5rem);
+      display: flex; align-items: center;
+      justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    }
+    .foot-brand {
+      display: flex; align-items: center; gap: .65rem;
+      text-decoration: none;
+    }
+    .foot-mark {
+      width: 28px; height: 28px; border-radius: 7px;
+      background: linear-gradient(135deg, var(--blue), var(--blue-l));
+      display: flex; align-items: center; justify-content: center;
+      font-size: .75rem;
+    }
+    .foot-name {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800; font-size: .95rem;
+      letter-spacing: .04em; color: var(--white);
+    }
+    .foot-copy { font-size: .75rem; color: var(--steel); }
+    .foot-socs { display: flex; gap: .6rem; }
+    .fsoc {
+      width: 32px; height: 32px; border-radius: 7px;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--steel); font-size: .72rem; font-weight: 700;
+      text-decoration: none;
+      transition: border-color .2s, color .2s, background .2s;
+    }
+    .fsoc:hover { border-color: var(--border-h); color: var(--white); background: var(--glass); }
+
+    /* ── WA FLOAT ── */
+    .wa {
+      position: fixed; bottom: 1.8rem; right: 1.8rem; z-index: 2000;
+      width: 54px; height: 54px; border-radius: 50%;
+      background: #25D366;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 1.5rem;
+      text-decoration: none;
+      box-shadow: 0 4px 20px rgba(37,211,102,.45);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .wa:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(37,211,102,.6); }
+
+    /* ── FADE IN on scroll ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 960px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-visual { display: none; }
+      .two-col { grid-template-columns: 1fr; gap: 3rem; }
+      .grid-3 { grid-template-columns: repeat(2,1fr); }
+      .steps { grid-template-columns: repeat(2,1fr); }
+      .contact-wrap { grid-template-columns: 1fr; gap: 2.5rem; }
+    }
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .hero h1 { font-size: 2.6rem; }
+      .grid-3 { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: 1fr; }
+      .cc-grid { grid-template-columns: 1fr; }
+      section { padding: 4rem clamp(1.5rem,5%,5rem); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, .reveal { transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<a href="https://wa.me/573013010901" class="wa" target="_blank" rel="noopener" title="WhatsApp">💬</a>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-brand">
+    <div class="nav-logo-mark">⚙️</div>
+    <span class="nav-brand-text">TÉCNICOS <span>ASOCIADOS</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#nosotros">Nosotros</a></li>
+    <li><a href="#proceso">Proceso</a></li>
+    <li><a href="#contacto" class="nav-cta">Contáctanos</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-copy">
+    <div class="pill">
+      <span class="pill-dot"></span>
+      <span>Bogotá · Rectificación Automotriz</span>
+    </div>
+    <h1>
+      Expertos en<br/>
+      <span class="grad">Rectificación</span><br/>
+      de Motores
+    </h1>
+    <p class="hero-sub">
+      Laboratorio especializado en rectificación de motores Diésel y gasolina.
+      Maquinaria de punta, técnicos expertos y calidad garantizada en cada servicio.
+    </p>
+    <div class="hero-btns">
+      <a href="https://wa.me/573013010901" class="btn-blue" target="_blank" rel="noopener">
+        💬 Solicitar cotización
+      </a>
+      <a href="#servicios" class="btn-line">Ver servicios →</a>
+    </div>
+    <div class="trust">
+      <span class="trust-item">Motores Diésel y gasolina</span>
+      <span class="trust-item">Trabajo pesado</span>
+      <span class="trust-item">Laboratorio propio</span>
+      <span class="trust-item">Calidad garantizada</span>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="vis-card reveal">
+      <div class="vis-card-top">
+        <div class="vis-icon">🔴</div>
+        <span class="vis-badge">Especialidad</span>
+      </div>
+      <p class="vis-title">Rectificación de Motores Diésel</p>
+      <p class="vis-desc">Cummins, Mercedes Benz, Dodge y más. Proceso completo con maquinaria de precisión.</p>
+    </div>
+    <div class="vis-card reveal" style="transition-delay:.1s">
+      <div class="vis-card-top">
+        <div class="vis-icon">🔩</div>
+        <span class="vis-badge">Proceso</span>
+      </div>
+      <p class="vis-title">Rectificación de Cigüeñal</p>
+      <p class="vis-desc">Medición, rectificado y ajuste a tolerancias originales del fabricante.</p>
+    </div>
+    <div class="vis-card reveal" style="transition-delay:.2s">
+      <div class="vis-card-top">
+        <div class="vis-icon">🔬</div>
+        <span class="vis-badge">Laboratorio</span>
+      </div>
+      <p class="vis-title">Laboratorio Diésel</p>
+      <p class="vis-desc">Diagnóstico, calibración de inyectores y análisis de sistemas de inyección.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">⚙️ Rectificación de Motores <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">🔩 Rectificación de Cigüeñal <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">🔬 Laboratorio Diésel <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">🧱 Bruñido de Cilindros <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">🚛 Trabajo Pesado <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">⭐ Calidad Garantizada <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">📍 Bogotá Sur <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">⚙️ Rectificación de Motores <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">🔩 Rectificación de Cigüeñal <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">🔬 Laboratorio Diésel <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">🧱 Bruñido de Cilindros <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">🚛 Trabajo Pesado <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">⭐ Calidad Garantizada <span class="marquee-sep">◆</span></span>
+    <span class="marquee-item">📍 Bogotá Sur <span class="marquee-sep">◆</span></span>
+  </div>
+</div>
+
+<!-- SERVICIOS -->
+<section id="servicios">
+  <span class="label reveal">Lo que hacemos</span>
+  <h2 class="sec-h reveal">Nuestros servicios</h2>
+  <p class="sec-p reveal">Maquinaria especializada y técnicos expertos para motores de todo tipo de vehículo, livianos y de trabajo pesado.</p>
+
+  <div class="grid-3">
+    <div class="svc-card reveal">
+      <div class="svc-top">
+        <div class="svc-icon-wrap">🔴</div>
+        <span class="svc-num">01</span>
+      </div>
+      <p class="svc-name">Rectificación Motores Diésel</p>
+      <p class="svc-desc">Especialistas en motores de trabajo pesado: Cummins, Mercedes Benz, Dodge y más. Diagnóstico completo, bruñido y ajuste de tolerancias.</p>
+    </div>
+    <div class="svc-card reveal" style="transition-delay:.07s">
+      <div class="svc-top">
+        <div class="svc-icon-wrap">⚡</div>
+        <span class="svc-num">02</span>
+      </div>
+      <p class="svc-name">Rectificación Motores Gasolina</p>
+      <p class="svc-desc">Rectificación para vehículos particulares y carga liviana. Precisión milimétrica para garantizar rendimiento óptimo del motor.</p>
+    </div>
+    <div class="svc-card reveal" style="transition-delay:.14s">
+      <div class="svc-top">
+        <div class="svc-icon-wrap">🔩</div>
+        <span class="svc-num">03</span>
+      </div>
+      <p class="svc-name">Rectificación de Cigüeñal</p>
+      <p class="svc-desc">Proceso especializado con maquinaria de precisión. Medición, rectificado y ajuste a tolerancias originales del fabricante.</p>
+    </div>
+    <div class="svc-card reveal" style="transition-delay:.07s">
+      <div class="svc-top">
+        <div class="svc-icon-wrap">🧱</div>
+        <span class="svc-num">04</span>
+      </div>
+      <p class="svc-name">Bruñido de Cilindros</p>
+      <p class="svc-desc">Bruñido de alta precisión para el correcto patrón de rayado en las paredes del cilindro y óptimo asentamiento de anillos.</p>
+    </div>
+    <div class="svc-card reveal" style="transition-delay:.14s">
+      <div class="svc-top">
+        <div class="svc-icon-wrap">🔬</div>
+        <span class="svc-num">05</span>
+      </div>
+      <p class="svc-name">Laboratorio Diésel</p>
+      <p class="svc-desc">Diagnóstico y análisis de sistemas de inyección Diésel. Calibración de inyectores y medición de presiones con equipos especializados.</p>
+    </div>
+    <div class="svc-card reveal" style="transition-delay:.21s">
+      <div class="svc-top">
+        <div class="svc-icon-wrap">🛠️</div>
+        <span class="svc-num">06</span>
+      </div>
+      <p class="svc-name">Diagnóstico y Asesoría</p>
+      <p class="svc-desc">Sonido metálico o pérdida de potencia. Te asesoramos para identificar la falla a tiempo y evitar daños mayores. Consúltanos primero.</p>
+    </div>
+  </div>
+</section>
+
+<!-- NOSOTROS -->
+<section id="nosotros">
+  <div class="two-col">
+    <div>
+      <span class="label reveal">Por qué elegirnos</span>
+      <h2 class="sec-h reveal">Compromiso<br/>y calidad en<br/>cada servicio</h2>
+      <p class="sec-p reveal" style="margin-bottom:0">Empresa especializada en rectificación automotriz en el sur de Bogotá. Maquinaria de precisión y técnicos altamente capacitados.</p>
+
+      <div class="feat-list">
+        <div class="feat reveal">
+          <span class="feat-icon">🏭</span>
+          <div class="feat-body">
+            <strong>Instalaciones y maquinaria propias</strong>
+            <span>Taller y laboratorio equipados con maquinaria especializada para rectificación automotriz profesional.</span>
+          </div>
+        </div>
+        <div class="feat reveal">
+          <span class="feat-icon">⭐</span>
+          <div class="feat-body">
+            <strong>Calidad garantizada</strong>
+            <span>Cada trabajo sale con garantía. Medidas de precisión y procesos técnicos rigurosos en cada motor.</span>
+          </div>
+        </div>
+        <div class="feat reveal">
+          <span class="feat-icon">🚛</span>
+          <div class="feat-body">
+            <strong>Liviano y pesado</strong>
+            <span>Desde vehículos particulares hasta buses, camiones y maquinaria de trabajo pesado.</span>
+          </div>
+        </div>
+        <div class="feat reveal">
+          <span class="feat-icon">🔍</span>
+          <div class="feat-body">
+            <strong>Diagnóstico honesto</strong>
+            <span>Te decimos la verdad sobre tu motor. Si no tiene solución, te lo decimos con transparencia.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div class="sched-card">
+        <div class="sched-head">
+          <span class="sched-head-icon">🕐</span>
+          <span class="sched-head-text">Horario de atención</span>
+        </div>
+        <div class="sched-body">
+          <div class="sched-row">
+            <span class="sched-day">Lunes – Jueves</span>
+            <span class="sched-time">8:00 am – 5:00 pm</span>
+          </div>
+          <div class="sched-row">
+            <span class="sched-day">Viernes</span>
+            <span class="sched-time">7:00 am – 5:00 pm</span>
+          </div>
+          <div class="sched-row">
+            <span class="sched-day">Sábados</span>
+            <span class="sched-time">7:00 am – 1:00 pm</span>
+          </div>
+          <div class="sched-row">
+            <span class="sched-day">Domingos</span>
+            <span class="sched-time sched-closed">Cerrado</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-quick">
+        <span class="contact-quick-label">📞 Llámanos o escríbenos</span>
+        <a href="tel:+573013010901" class="cq-num">301 301 0901</a>
+        <a href="tel:+573112371310" class="cq-num">311 237 1310</a>
+        <p class="cq-addr">📍 Cra 86C Bis #42-20 Sur<br/>Bogotá, Colombia</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESO -->
+<section id="proceso">
+  <span class="label reveal">Cómo trabajamos</span>
+  <h2 class="sec-h reveal">Proceso claro,<br/>resultado garantizado</h2>
+  <p class="sec-p reveal">Desde que llega tu motor hasta que sale listo, seguimos un proceso técnico riguroso con total transparencia.</p>
+
+  <div class="steps">
+    <div class="step reveal">
+      <span class="step-num">01</span>
+      <span class="step-icon">🔍</span>
+      <p class="step-title">Recepción y diagnóstico</p>
+      <p class="step-desc">Inspección técnica completa para identificar el estado real del motor y los daños presentes.</p>
+    </div>
+    <div class="step reveal" style="transition-delay:.08s">
+      <span class="step-num">02</span>
+      <span class="step-icon">📋</span>
+      <p class="step-title">Cotización detallada</p>
+      <p class="step-desc">Presupuesto claro con proceso, repuestos y tiempo estimado. Sin sorpresas al final.</p>
+    </div>
+    <div class="step reveal" style="transition-delay:.16s">
+      <span class="step-num">03</span>
+      <span class="step-icon">⚙️</span>
+      <p class="step-title">Rectificación</p>
+      <p class="step-desc">Ejecutamos la rectificación con maquinaria especializada: cigüeñal, bruñido, tolerancias y más.</p>
+    </div>
+    <div class="step reveal" style="transition-delay:.24s">
+      <span class="step-num">04</span>
+      <span class="step-icon">✅</span>
+      <p class="step-title">Entrega con garantía</p>
+      <p class="step-desc">Revisión final y entrega con garantía por el trabajo realizado. Tu inversión protegida.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="contact-wrap">
+    <div>
+      <span class="label reveal">Hablemos</span>
+      <h2 class="sec-h reveal">¿Tu motor necesita rectificación?</h2>
+      <p class="sec-p reveal">Contáctanos por el canal que prefieras. Estamos en el sur de Bogotá.</p>
+
+      <div class="cc-grid">
+        <a href="https://wa.me/573013010901" class="cc-card reveal" target="_blank" rel="noopener">
+          <div class="cc-icon-wrap">💬</div>
+          <div>
+            <span class="cc-lbl">WhatsApp</span>
+            <span class="cc-val">301 301 0901</span>
+          </div>
+        </a>
+        <a href="tel:+573112371310" class="cc-card reveal">
+          <div class="cc-icon-wrap">📞</div>
+          <div>
+            <span class="cc-lbl">Teléfono</span>
+            <span class="cc-val">311 237 1310</span>
+          </div>
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=100070518100617" class="cc-card reveal" target="_blank" rel="noopener">
+          <div class="cc-icon-wrap">📘</div>
+          <div>
+            <span class="cc-lbl">Facebook</span>
+            <span class="cc-val">Tecnicos Asociados</span>
+          </div>
+        </a>
+        <a href="https://www.instagram.com/tecnicos.asociados.2021/" class="cc-card reveal" target="_blank" rel="noopener">
+          <div class="cc-icon-wrap">📷</div>
+          <div>
+            <span class="cc-lbl">Instagram</span>
+            <span class="cc-val">@tecnicos.asociados</span>
+          </div>
+        </a>
+      </div>
+
+      <a href="https://maps.google.com/?q=Carrera+86C+Bis+42-20+Sur+Bogota" class="map-link reveal" target="_blank" rel="noopener">
+        📍 Ver en Google Maps — Cra 86C Bis #42-20 Sur, Bogotá
+      </a>
+    </div>
+
+    <div class="cta-block reveal">
+      <span class="cta-icon">🔧</span>
+      <p class="cta-title">¿Listo para rectificar tu motor?</p>
+      <p class="cta-sub">Escríbenos por WhatsApp y te respondemos con una cotización sin costo. Atención rápida y honesta.</p>
+      <a href="https://wa.me/573013010901" class="cta-btn" target="_blank" rel="noopener">
+        💬 Escribir por WhatsApp
+      </a>
+      <div class="cta-socials">
+        <a href="https://www.facebook.com/profile.php?id=100070518100617" class="cta-soc" target="_blank" rel="noopener">📘 Facebook</a>
+        <a href="https://www.instagram.com/tecnicos.asociados.2021/" class="cta-soc" target="_blank" rel="noopener">📷 Instagram</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="foot-brand">
+    <div class="foot-mark">⚙️</div>
+    <span class="foot-name">TÉCNICOS ASOCIADOS</span>
+  </a>
+  <span class="foot-copy">© Técnicos Asociados · Rectificación de motores · Bogotá, Colombia</span>
+  <div class="foot-socs">
+    <a href="https://www.facebook.com/profile.php?id=100070518100617" class="fsoc" target="_blank" rel="noopener">FB</a>
+    <a href="https://www.instagram.com/tecnicos.asociados.2021/" class="fsoc" target="_blank" rel="noopener">IG</a>
+  </div>
+</footer>
+
+<script>
+  // Reveal on scroll
+  const els = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.12 });
+  els.forEach(el => io.observe(el));
+
+  // Trigger hero reveals immediately
+  document.querySelectorAll('.hero .reveal').forEach(el => el.classList.add('visible'));
+</script>
+</body>
+</html>
